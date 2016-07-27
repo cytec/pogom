@@ -29,7 +29,13 @@ def get_args():
 
     parser.add_argument('-d', '--debug', type=str.lower, help='Debug Level [info|debug]', default=None)
 
-    return parser.parse_args()
+    parser.add_argument('-s', '--scan-only', help='start only the scanner, no webserver', action='store_true')
+
+    args = parser.parse_args()
+    if args.password is None:
+        args.password = getpass.getpass()
+
+    return args
 
 
 def get_pokemon_name(pokemon_id):

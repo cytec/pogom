@@ -72,4 +72,11 @@ if __name__ == '__main__':
 
     app = Pogom(scan_config, __name__)
     config['ROOT_PATH'] = app.root_path
-    app.run(threaded=True, debug=args.debug, host=args.host, port=args.port)
+
+    if args.scan_only:
+        logging.info("starting in scanner only mode (disabled webserver)")
+        while True:
+            continue
+    else:
+        logging.info("started webserver at %s:%s" % (args.host, args.port))
+        app.run(threaded=True, debug=args.debug, host=args.host, port=args.port)
