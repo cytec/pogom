@@ -3,19 +3,30 @@
 
 import logging
 from peewee import Model, SqliteDatabase, InsertQuery, IntegerField, \
-    CharField, FloatField, BooleanField, DateTimeField, fn, SQL
+    CharField, FloatField, BooleanField, DateTimeField, fn, SQL, \
+    MySQLDatabase
 from datetime import datetime
 from base64 import b64encode
 
-from .utils import get_pokemon_name
 
-db = SqliteDatabase('pogom.db', pragmas=(
-    ('journal_mode', 'WAL'),
-    ('cache_size', 10000),
-    ('mmap_size', 1024 * 1024 * 32),
-))
+from .utils import get_pokemon_name, get_args
+args = get_args()
+
 log = logging.getLogger(__name__)
 
+if args.db_type == 'mysql':
+    db = MySQLDatabase(args.db_name,
+        user=args.db_user,
+        password=args.db_pass,
+        host=args.db_host)
+    log.info('Connecting to MySQL database on %s' % args.db_host)
+else:
+    db = SqliteDatabase('pogom.db', pragmas=(
+        ('journal_mode', 'WAL'),
+        ('cache_size', 10000),
+        ('mmap_size', 1024 * 1024 * 32),
+    ))
+    log.info('Connecting to local SQLite database')
 
 class SearchConfig(object):
     ORIGINAL_LATITUDE = None

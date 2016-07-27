@@ -34,6 +34,12 @@ def get_args():
 
     parser.add_argument('-s', '--scan-only', help='start only the scanner, no webserver', action='store_true')
 
+    parser.add_argument('--db-type', help='Type of database to be used (default: sqlite)', default='sqlite')
+    parser.add_argument('--db-name', help='Name of the database to be used')
+    parser.add_argument('--db-user', help='Username for the database')
+    parser.add_argument('--db-pass', help='Password for the database')
+    parser.add_argument('--db-host', help='IP or hostname for the database')
+
     args = parser.parse_args()
     if args.password is None:
         args.password = getpass.getpass()
